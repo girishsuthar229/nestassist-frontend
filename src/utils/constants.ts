@@ -122,8 +122,6 @@ export const USER_MANAGEMENT_STATUS_OPTIONS = {
 
 // contants for auth - START
 
-export const CUSTOMER_AUTH_TOKEN_KEY = "customerToken";
-export const CUSTOMER_AUTH_USER_KEY = "userInfo";
 export const ACCESS_AUTH_TOKEN_KEY = "accessToken";
 export const AUTH_TOKEN_KEY = "authToken";
 export const AUTH_USER_KEY = "authinfo";

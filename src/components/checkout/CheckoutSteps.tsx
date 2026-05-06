@@ -9,7 +9,6 @@ import PaymentMethod from "./PaymentMethod";
 import SlotModal from "./SlotModal";
 import { convertStringDateToGBFormat } from "@/utils";
 import ConfirmPopup from "@/components/common/ConfirmPopup";
-import axiosInstanceLaravel from "@/helper/axiosInstanceLaravel";
 import axiosInstance from "@/helper/axiosInstance";
 import { urlStrings } from "@/pages/auth/config/constant";
 import toast from "react-hot-toast";
@@ -33,16 +32,14 @@ import userImg from "@/assets/checkout/user.png";
 import paymentBlueImg from "@/assets/checkout/payment-blue.png";
 import slotsBlueImg from "@/assets/checkout/slot-blue.png";
 import {
-  CUSTOMER_AUTH_TOKEN_KEY,
-  CUSTOMER_AUTH_USER_KEY,
-  ADMIN_AUTH_TOKEN_KEY,
-  PARTNER_AUTH_TOKEN_KEY,
+  AUTH_TOKEN_KEY,
+  AUTH_USER_KEY,
 } from "@/utils/constants";
 import { CHECKOUT_CONST_TEXT } from "@/constants/checkout.text";
 
 const getInitialUser = (): UserType => {
-  const token = localStorage.getItem(CUSTOMER_AUTH_TOKEN_KEY);
-  const userInfoString = localStorage.getItem(CUSTOMER_AUTH_USER_KEY);
+  const token = localStorage.getItem(AUTH_TOKEN_KEY);
+  const userInfoString = localStorage.getItem(AUTH_USER_KEY);
   if (token && userInfoString) {
     try {
       const parsedUser = JSON.parse(userInfoString);
@@ -78,8 +75,8 @@ const CheckoutSteps = ({
   const [loggedInRole, setLoggedInRole] = useState<string>("");
 
   useEffect(() => {
-    const token = localStorage.getItem(CUSTOMER_AUTH_TOKEN_KEY);
-    const userInfoString = localStorage.getItem(CUSTOMER_AUTH_USER_KEY);
+    const token = localStorage.getItem(AUTH_TOKEN_KEY);
+    const userInfoString = localStorage.getItem(AUTH_USER_KEY);
 
     if (token && userInfoString) {
       try {
@@ -149,8 +146,8 @@ const CheckoutSteps = ({
   };
 
   const handleSignInClick = () => {
-    const adminToken = localStorage.getItem(ADMIN_AUTH_TOKEN_KEY);
-    const partnerToken = localStorage.getItem(PARTNER_AUTH_TOKEN_KEY);
+    const adminToken = localStorage.getItem(AUTH_TOKEN_KEY);
+    const partnerToken = localStorage.getItem(AUTH_TOKEN_KEY);
 
     if (adminToken) {
       setLoggedInRole("Admin");
@@ -164,14 +161,14 @@ const CheckoutSteps = ({
   };
 
   const handleLogoutConfirm = async () => {
-    const adminToken = localStorage.getItem(ADMIN_AUTH_TOKEN_KEY);
-    const partnerToken = localStorage.getItem(PARTNER_AUTH_TOKEN_KEY);
+    const adminToken = localStorage.getItem(AUTH_TOKEN_KEY);
+    const partnerToken = localStorage.getItem(AUTH_TOKEN_KEY);
 
     try {
       if (adminToken) {
-        await axiosInstanceLaravel.post(urlStrings.adminLogout);
+        await axiosInstance.post(urlStrings.authLogout);
       } else if (partnerToken) {
-        await axiosInstance.post(urlStrings.servicePartnerLogout);
+        await axiosInstance.post(urlStrings.authLogout);
       }
       toast.success(CHECKOUT_CONST_TEXT.logedOutSuccess);
     } catch (error) {

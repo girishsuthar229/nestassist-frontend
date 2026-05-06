@@ -14,7 +14,7 @@ export const AdminDetailProvider = ({
 }) => {
   const [profileDetail, setProfileDetail] = useState<ProfileDetail | null>(null);
   const [loading, setLoading] = useState(false);
-  const { isAdmin, isPartner } = useAuth();
+  const { isAdmin, isPartner, isCustomer } = useAuth();
 
   const fetchProfileDetail = async () => {
     try {
@@ -29,10 +29,10 @@ export const AdminDetailProvider = ({
   };
 
   useEffect(() => {
-    if (isAdmin || isPartner) {
+    if (isAdmin || isPartner || isCustomer) {
       fetchProfileDetail();
     }
-  }, [isAdmin, isPartner]);
+  }, [isAdmin, isPartner, isCustomer]);
 
 
   return (

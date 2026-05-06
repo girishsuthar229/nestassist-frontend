@@ -1,6 +1,4 @@
 import {
-  CUSTOMER_AUTH_TOKEN_KEY,
-  CUSTOMER_AUTH_USER_KEY,
   ACCESS_AUTH_TOKEN_KEY,
   AUTH_TOKEN_KEY,
   AUTH_USER_KEY
@@ -16,7 +14,7 @@ export const getAuthKeys = (role: AuthRole) => {
     case "partner":
       return { token: AUTH_TOKEN_KEY, user: AUTH_USER_KEY };
     case "customer":
-      return { token: CUSTOMER_AUTH_TOKEN_KEY, user: CUSTOMER_AUTH_USER_KEY };
+      return { token: AUTH_TOKEN_KEY, user: AUTH_USER_KEY };
     default:
       // Fallback or generic token
       return { token: ACCESS_AUTH_TOKEN_KEY, user: "userInfo" };

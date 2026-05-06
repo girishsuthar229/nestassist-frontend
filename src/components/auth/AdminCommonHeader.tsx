@@ -15,7 +15,7 @@ const AdminCommonHeader = ({ title, subtitle }: Readonly<IProps>) => {
         <img
           src={logoImage}
           alt={ADMIN_AUTH_TEXTS.logoAlt}
-          className="h-auto w-[245px] mb-2 ml-[28px] cursor-pointer"
+          className="h-auto w-[245px] cursor-pointer"
         />
       </Link>
       <h4 className="text-2xl sm:text-3xl md:text-[32px] font-medium text-slate-800 text-center tracking-tight leading-tight sm:leading-[44px]">

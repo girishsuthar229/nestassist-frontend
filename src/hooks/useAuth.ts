@@ -6,12 +6,13 @@ export const useAuth = () => {
   const [user, setUser] = useState<Record<string, unknown> | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isPartner, setIsPartner] = useState(false);
+  const [isCustomer, setIsCustomer] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
     const accessToken = localStorage.getItem("accessToken");
-    const authInfoRaw = localStorage.getItem("authinfo");
+    const authInfoRaw = localStorage.getItem("authinfo") ;
 
     const token = authToken || accessToken;
 
@@ -28,6 +29,7 @@ export const useAuth = () => {
               Boolean(userData?.is_super_admin)
           );
           setIsPartner(userData?.role === ROLES.SERVICE_PARTNER);
+          setIsCustomer(userData?.role === ROLES.CUSTOMER);
         } catch (err) {
           console.error("Failed to parse admin info", err);
         }
@@ -35,5 +37,5 @@ export const useAuth = () => {
     }
   }, []);
 
-  return { user, isAdmin, isPartner, isAuthenticated };
+  return { user, isAdmin, isPartner, isCustomer, isAuthenticated };
 };

@@ -15,9 +15,9 @@ export const urlStrings = {
   authResetPassword: "/auth/reset-password",
   authLogout: "/auth/logout",
 
-  customerLogin: "/customer/send-otp",
-  customerVerifyOtp:"/customer/verify-otp",
-  customerResendOtp:"/customer/resend-otp",
+  customerLogin: "/v1/customer/send-otp",
+  customerVerifyOtp:"/v1/customer/verify-otp",
+  customerResendOtp:"/v1/customer/resend-otp",
 };
 
 export const adminLoginFields: DynamicFormField<IAdminLogin>[] = [

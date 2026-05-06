@@ -21,13 +21,11 @@ const AuthGuard = ({
 
   // Unified token and user info check
   const authToken = localStorage.getItem("authToken");
-  const customerToken = localStorage.getItem("customerToken");
   const accessToken = localStorage.getItem("accessToken");
   const authInfoRaw = localStorage.getItem("authinfo");
-  const customerInfoRaw = localStorage.getItem("userInfo");
 
 
-  const token = authToken || accessToken || customerToken;
+  const token = authToken || accessToken ;
 
   let isAdminUser = false;
   let isPartnerUser = false;
@@ -42,19 +40,12 @@ const AuthGuard = ({
         user?.role === ROLES.SUPER_ADMIN ||
         Boolean(user?.is_super_admin);
       isPartnerUser = user?.role === ROLES.SERVICE_PARTNER;
+      isCustomerUser = user?.role === ROLES.CUSTOMER || Boolean(user?.is_verified); 
     } catch {
       console.error("Invalid user info in localStorage");
     }
   }
-  else if (customerInfoRaw) {
-    try {
-      user = JSON.parse(customerInfoRaw);
-      isCustomerUser = user?.role === ROLES.CUSTOMER || Boolean(user?.is_verified); 
-    } catch {
-      console.error("Invalid customer info in localStorage");
-    }
-  }
-  
+
   // 1. Not authenticated
   if (!token) {
     const isTryingAdminRoute = location.pathname.startsWith("/admin");

@@ -10,7 +10,7 @@ import CustomerAuthLayout from "@/components/layout/auth/CustomerAuthLayout";
 import CustomerCommonHeader from "@/components/ui/commonLoginHeadding";
 
 import { APP_ROUTES } from "@/routes/config";
-import axiosInstanceLaravel from "@/helper/axiosInstanceLaravel";
+import axiosInstance from "@/helper/axiosInstance";
 import { otpSchema } from "@/schemas";
 import { urlStrings } from "../config/constant";
 import { saveAuthData } from "@/utils/auth";
@@ -71,7 +71,7 @@ const CustomerOtp = () => {
     if (!validateEmail()) return false;
 
     try {
-      const response = await axiosInstanceLaravel.post(url, payload);
+      const response = await axiosInstance.post(url, payload);
 
       if (response.data.success) {
         if (successMessage) {

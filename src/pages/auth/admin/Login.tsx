@@ -33,7 +33,6 @@ export const AdminLogin = () => {
       setServerError(null);
       try {
         const response = await axiosInstance.post(urlStrings.authLogin, values);
-        console.log("responseresponseresponse",response.data)
         if (response.data.success) {
           toast.success("Login successful!");
           const user = response.data.data.user;

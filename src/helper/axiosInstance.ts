@@ -1,5 +1,4 @@
 import { APP_ROUTES } from "@/routes/config";
-import { CUSTOMER_AUTH_TOKEN_KEY } from "@/utils/constants";
 import axios, { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from "axios";
 import toast from "react-hot-toast";
 
@@ -41,8 +40,7 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const token =
       localStorage.getItem("authToken") ||
-      localStorage.getItem("accessToken") ||
-      localStorage.getItem(CUSTOMER_AUTH_TOKEN_KEY);
+      localStorage.getItem("accessToken")
     if (token && config.headers) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }

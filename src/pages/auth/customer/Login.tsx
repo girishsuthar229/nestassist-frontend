@@ -5,7 +5,7 @@ import axios from "axios";
 import { Mail } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import axiosInstanceLaravel from "@/helper/axiosInstanceLaravel";
+import axiosInstance from "@/helper/axiosInstance";
 import FormikTextField from "@/components/ui/formikTextfield";
 import { APP_ROUTES } from "@/routes/config";
 import CustomerAuthLayout from "@/components/layout/auth/CustomerAuthLayout";
@@ -36,7 +36,7 @@ const CustomerLogin = () => {
       setServerError(null);
 
       try {
-        const response = await axiosInstanceLaravel.post(
+        const response = await axiosInstance.post(
           urlStrings.customerLogin,
           values,
         );

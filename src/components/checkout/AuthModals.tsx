@@ -15,7 +15,7 @@ import FormikTextField from "@/components/ui/formikTextfield";
 import { customerLoginSchema, otpSchema } from "@/schemas";
 import { APP_ROUTES } from "@/routes/config";
 import { saveAuthData } from "@/utils/auth";
-import axiosInstanceLaravel from "@/helper/axiosInstanceLaravel";
+import axiosInstance from "@/helper/axiosInstance";
 import { urlStrings } from "@/pages/auth/config/constant";
 import type { IProps } from "@/types/auth/index.interface";
 import { OTP_LENGTH } from "@/utils/constants";
@@ -73,7 +73,7 @@ const AuthModals = ({ isOpen, onClose, onSuccess }: IProps) => {
       setApiResponse(null);
 
       try {
-        const response = await axiosInstanceLaravel.post(
+        const response = await axiosInstance.post(
           urlStrings.customerLogin,
           values,
         );
@@ -113,7 +113,7 @@ const AuthModals = ({ isOpen, onClose, onSuccess }: IProps) => {
       resetMessages();
 
       try {
-        const response = await axiosInstanceLaravel.post(
+        const response = await axiosInstance.post(
           urlStrings.customerVerifyOtp,
           values,
         );
@@ -154,7 +154,7 @@ const AuthModals = ({ isOpen, onClose, onSuccess }: IProps) => {
     setServerSuccess(null);
 
     try {
-      const response = await axiosInstanceLaravel.post(
+      const response = await axiosInstance.post(
         urlStrings.customerResendOtp,
         {
           email: otpFormik.values.email,
