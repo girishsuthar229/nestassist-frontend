@@ -98,7 +98,7 @@ const ServiceManagementModal = ({
 
   const checkPendingBookings = async () => {
     try {
-      const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
+      const userInfo = JSON.parse(localStorage.getItem("authinfo") || "{}");
       if (!userInfo.id) return;
 
       const response = await myBookingsServicesAPI({

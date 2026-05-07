@@ -7,7 +7,8 @@ import "@geoapify/geocoder-autocomplete/styles/minimal.css";
 import toast from "react-hot-toast";
 
 import type { AddressPreFillData } from "@/components/profile/AddAddressModal";
-import axiosInstanceLaravel from "@/helper/axiosInstanceLaravel";
+import axiosInstance from "@/helper/axiosInstance";
+
 import CommonPopup from "@/components/common/CommonPopup";
 import { UI_COLORS } from "@/constants/colors";
 
@@ -70,8 +71,8 @@ export const LocationPickerModal = ({
     };
 
     // Fire-and-forget: save this place as a recent search
-    axiosInstanceLaravel
-      .post("customer/recent-searches", {
+    axiosInstance
+      .post("customer/profile/recent-searches", {
         latitude: String(p.lat ?? 0),
         longitude: String(p.lon ?? 0),
         address_line1: p.address_line1 ?? "",
@@ -84,6 +85,7 @@ export const LocationPickerModal = ({
       .catch((err) => {
         console.error("Failed to save recent search:", err);
       });
+
 
     onPlaceSelect(data);
     onClose();

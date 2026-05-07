@@ -24,11 +24,11 @@ const ServicesPage = React.lazy(() => import("@/pages/home-services"));
 const ServicePartnerSignup = React.lazy(() => import("@/pages/service-partner"));
 
 const customerRoutes = [
-  <Route element={<AuthGuard customerOnly={true}><HomePageLayout /></AuthGuard>}>
-    <Route path={APP_ROUTES.PROFILE} element={<UserProfile />} />
-    <Route path={APP_ROUTES.MY_BOOKINGS} element={<MyBookingsPage />} />
-  </Route>,
   <Route key="customer-layout" element={<HomePageLayout />}>
+    <Route element={<AuthGuard customerOnly={true}/>}>
+      <Route path={APP_ROUTES.PROFILE} element={<UserProfile />} />
+      <Route path={APP_ROUTES.MY_BOOKINGS} element={<MyBookingsPage />} />
+    </Route>
     <Route path={APP_ROUTES.HOME} element={<HomePage />} />
     <Route path={APP_ROUTES.MY_BOOKINGS} element={<MyBookingsPage />} />
     <Route path={APP_ROUTES.SERVICES} element={<ServicesPage />} />

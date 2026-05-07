@@ -33,7 +33,7 @@ const MyBookingsPage = () => {
 
       try {
         const userId = Number(
-          JSON.parse(localStorage.getItem("userInfo") || "{}").id
+          JSON.parse(localStorage.getItem("authinfo") || "{}").id
         );
         const response = await myBookingsServicesAPI({
           userId,

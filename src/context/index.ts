@@ -7,6 +7,19 @@ export interface AdminDetailContextType {
 
 export type UserRoleS = "ADMIN" | "SUPER_ADMIN" | "SERVICE_PARTNER" | "CUSTOMER" ;
 
+export interface IAddress {
+  id: number;
+  label: string;
+  custom_label: string | null;
+  display_label: string;
+  house_flat_number: string;
+  landmark: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  full_address: string;
+}
+
 export interface ProfileDetail {
   id: number;
   name: string;
@@ -26,4 +39,6 @@ export interface ProfileDetail {
   servicetypes?: { id: number; name: string }[];
   categories?: { id: number; name: string }[];
   subcategories?: { id: number; name: string }[];
+  is_active?: boolean;
+  addresses?: IAddress[];
 }

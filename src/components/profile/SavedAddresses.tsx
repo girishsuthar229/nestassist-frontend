@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Plus, MoreVertical, Pencil, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 
-import axiosInstanceLaravel from "@/helper/axiosInstanceLaravel";
+import axiosInstance from "@/helper/axiosInstance";
+
 import { Button } from "@/components/ui/button";
 import { AddAddressModal, type AddressPreFillData } from "./AddAddressModal";
 import { LocationPickerModal } from "./LocationPickerModal";
@@ -61,7 +62,8 @@ export const SavedAddresses = ({ initialAddresses = [] }: IProps) => {
   const fetchAddresses = async () => {
     try {
       setLoading(true);
-      const response = await axiosInstanceLaravel.get("customer/addresses");
+      const response = await axiosInstance.get("customer/profile/addresses");
+
       if (response.data && response.data.data) {
         setAddresses(response.data.data);
       }
@@ -78,8 +80,8 @@ export const SavedAddresses = ({ initialAddresses = [] }: IProps) => {
 
   const handleAddClick = async () => {
     try {
-      const response = await axiosInstanceLaravel.get(
-        "customer/recent-searches"
+      const response = await axiosInstance.get(
+        "customer/profile/recent-searches"
       );
       if (response.data?.data) {
         setRecentSearches(response.data.data);
@@ -115,8 +117,8 @@ export const SavedAddresses = ({ initialAddresses = [] }: IProps) => {
   const handleConfirmDelete = async () => {
     if (!addressToDelete) return;
     try {
-      await axiosInstanceLaravel.delete(
-        `customer/addresses/${addressToDelete.id}`
+      await axiosInstance.delete(
+        `customer/profile/addresses/${addressToDelete.id}`
       );
       toast.success(PROFILE_TEXT.addressDeleteSuccess);
       fetchAddresses(); // Refresh the list

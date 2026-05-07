@@ -41,7 +41,7 @@ export const profileImageSchema = Yup.object({
 });
 
 export const profileMobileSchema = Yup.object({
-  mobile: mobileSchema,
+  mobile_number: mobileSchema,
 });
 
 export const profileEmailSchema = Yup.object({

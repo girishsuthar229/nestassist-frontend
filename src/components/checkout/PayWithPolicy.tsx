@@ -42,7 +42,7 @@ const PayWithPolicy = ({
     }
 
     const payload: ICheckoutPayload = {
-      userId: Number(JSON.parse(localStorage.getItem("userInfo") || "{}").id),
+      userId: Number(JSON.parse(localStorage.getItem("authinfo") || "{}").id),
       serviceId: serviceId,
       addressId: addressId,
       slot: slot || { date: "", time: "" },

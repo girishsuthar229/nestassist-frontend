@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 
 import CommonPopup from "@/components/common/CommonPopup";
 import { FloatingLabelInput } from "@/components/ui/input";
-import axiosInstanceLaravel from "@/helper/axiosInstanceLaravel";
+import axiosInstance from "@/helper/axiosInstance";
 import { otpSchema } from "@/schemas";
 import type { VerifyOtpProps } from "@/types/auth/index.interface";
 
@@ -27,7 +27,7 @@ export const VerifyOTPModal = ({
     onSubmit: async (values, { setFieldError, setErrors, setTouched }) => {
       try {
         setSubmitting(true);
-        await axiosInstanceLaravel.post(apiEndpoint, {
+        await axiosInstance.post(apiEndpoint, {
           [payloadKey]: receivedText,
           otp: `${values.otp}`,
         });
@@ -35,6 +35,8 @@ export const VerifyOTPModal = ({
           toast.success(successMessage);
         });
         onVerify(values.otp);
+        onClose();
+
       } catch (error: unknown) {
         console.error("OTP verification error:", error);
         const axiosError = error as AxiosError<{

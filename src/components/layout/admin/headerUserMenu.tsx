@@ -18,7 +18,6 @@ import axiosInstanceLaravel from "@/helper/axiosInstanceLaravel";
 import { urlStrings } from "@/pages/auth/config/constant";
 import { displayRole, getInitialsName } from "@/utils";
 import {
-  AdminDetailProvider,
   useAdminDetail,
 } from "@/context/AdminDetailContext";
 import { cn } from "@/lib/utils";
@@ -366,9 +365,7 @@ const HeaderUserMenuContent = ({ isMobile, onClose }: UserMenuProps) => {
 // --- Exported Wrapper ---
 
 const HeaderUserMenu = (props: UserMenuProps) => (
-  <AdminDetailProvider>
-    <HeaderUserMenuContent {...props} />
-  </AdminDetailProvider>
+  <HeaderUserMenuContent {...props} />
 );
 
 export default memo(HeaderUserMenu);

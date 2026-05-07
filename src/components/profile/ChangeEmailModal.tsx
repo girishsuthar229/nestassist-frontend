@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 
 import CommonPopup from "@/components/common/CommonPopup";
 import { FloatingLabelInput } from "@/components/ui/input";
-import axiosInstanceLaravel from "@/helper/axiosInstanceLaravel";
+import axiosInstance from "@/helper/axiosInstance";
 import { profileEmailSchema } from "@/schemas";
 
 interface IProps {
@@ -33,7 +33,7 @@ export const ChangeEmailModal = ({
     onSubmit: async (values, { setErrors, setTouched }) => {
       try {
         setSubmitting(true);
-        await axiosInstanceLaravel.patch(apiEndpoint, {
+        await axiosInstance.patch(apiEndpoint, {
           email: values.email,
         });
         import("react-hot-toast").then(({ default: toast }) => {

@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 
 import CommonPopup from "@/components/common/CommonPopup";
 import { FloatingLabelInput } from "@/components/ui/input";
-import axiosInstanceLaravel from "@/helper/axiosInstanceLaravel";
+import axiosInstance from "@/helper/axiosInstance";
 import { profileMobileSchema } from "@/schemas";
 import type { IChangeMobileProps } from "@/types/common.interface";
 
@@ -22,23 +22,24 @@ export const ChangeMobileModal = ({
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      mobile: currentMobile || "",
+      mobile_number: currentMobile || "",
     },
     validationSchema: profileMobileSchema,
     onSubmit: async (values, { setErrors, setTouched }) => {
       try {
         setSubmitting(true);
-        await axiosInstanceLaravel.patch(apiEndpoint, {
-          mobile_number: values.mobile,
+        await axiosInstance.patch(apiEndpoint, {
+          mobile_number: values.mobile_number.toString(),
         });
         import("react-hot-toast").then(({ default: toast }) => {
           toast.success(
             currentMobile ? successMessage : "Mobile number added successfully"
           );
         });
-        onSuccess?.(values.mobile);
+        onSuccess?.(values.mobile_number);
         onClose();
       } catch (error: unknown) {
+
         console.error("Change mobile error:", error);
         const axiosError = error as AxiosError<{
           errors?: Record<string, string[]>;
@@ -49,9 +50,8 @@ export const ChangeMobileModal = ({
           const formikErrors: Record<string, string> = {};
           const formikTouched: Record<string, boolean> = {};
           Object.keys(backendErrors).forEach((key) => {
-            const formikKey = key === "mobile_number" ? "mobile" : key;
-            formikErrors[formikKey] = backendErrors[key][0];
-            formikTouched[formikKey] = true;
+            formikErrors[key] = backendErrors[key][0];
+            formikTouched[key] = true;
           });
           setErrors(formikErrors);
           setTouched(formikTouched);
@@ -93,9 +93,9 @@ export const ChangeMobileModal = ({
       <div className="py-4">
         <FloatingLabelInput
           label="New Mobile Number"
-          name="mobile"
+          name="mobile_number"
           type="number"
-          value={formik.values.mobile}
+          value={formik.values.mobile_number}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           onKeyDown={(e) => {
@@ -106,7 +106,7 @@ export const ChangeMobileModal = ({
               }
             }
           }}
-          error={formik.touched.mobile ? formik.errors.mobile : undefined}
+          error={formik.touched.mobile_number ? formik.errors.mobile_number : undefined}
           className="bg-surface-elevated"
         />
       </div>

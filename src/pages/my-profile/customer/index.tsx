@@ -2,32 +2,39 @@ import { useState, useEffect } from "react";
 
 import { ContactInfo } from "@/components/profile/ContactInfo";
 import { SavedAddresses } from "@/components/profile/SavedAddresses";
-import axiosInstanceLaravel from "@/helper/axiosInstanceLaravel";
 import type { ICustomerProfile } from "@/types/masterData.interface";
 import { ProfileSkeleton } from "@/components/profile/ProfileSkeleton";
 import { PROFILE_TEXT } from "@/constants/profile.text";
+import { useAdminDetail } from "@/context/AdminDetailContext";
+import { displayRole } from "@/utils";
 
 const MyProfile = () => {
   const [profileData, setProfileData] = useState<ICustomerProfile | null>(null);
   const [loading, setLoading] = useState(true);
-
-  const fetchProfile = async (showLoader = true) => {
-    try {
-      if (showLoader) setLoading(true);
-      const response = await axiosInstanceLaravel.get("customer/profile");
-      if (response.data && response.data.data) {
-        setProfileData(response.data.data);
-      }
-    } catch (error: unknown) {
-      console.error(PROFILE_TEXT.fetchProfileError, error);
-    } finally {
-      if (showLoader) setLoading(false);
-    }
-  };
+  const { profileDetail, refetchProfileDetail } = useAdminDetail();
 
   useEffect(() => {
-    fetchProfile();
-  }, []);
+    setLoading(true);
+    if (profileDetail){
+      const mobile_number_with_code: string =
+      profileDetail.country_code && profileDetail.mobile_number
+        ? `+${profileDetail.country_code} ${profileDetail.mobile_number}`
+        : "";
+      const mappedData: ICustomerProfile = {
+        id: profileDetail?.id,
+        name: profileDetail.name,
+        email: profileDetail.email,
+        country_code: profileDetail?.country_code,
+        mobile_number: profileDetail?.mobile_number,
+        mobile_number_with_code: mobile_number_with_code,
+        role: displayRole(profileDetail.role),
+        is_active: profileDetail?.is_active || false,
+        addresses: profileDetail.addresses || [],
+      };
+      setProfileData(mappedData);
+    }
+    setLoading(false);
+  }, [profileDetail]);
 
   if (loading) {
     return <ProfileSkeleton />;
@@ -44,8 +51,9 @@ const MyProfile = () => {
           <div className="flex flex-col gap-8">
             <ContactInfo
               email={profileData?.email}
-              mobileNumberWithCode={profileData?.mobile_number_with_code}
-              onProfileUpdate={() => fetchProfile(false)}
+              mobileNumber={profileData?.mobile_number || ''}
+              countryCode={profileData?.country_code || ''}
+              onProfileUpdate={refetchProfileDetail}
             />
             <SavedAddresses initialAddresses={profileData?.addresses || []} />
           </div>

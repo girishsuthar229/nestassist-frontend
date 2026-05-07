@@ -16,7 +16,8 @@ import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import CommonPopup from "@/components/common/CommonPopup";
 import { FloatingLabelInput } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import axiosInstanceLaravel from "@/helper/axiosInstanceLaravel";
+import axiosInstance from "@/helper/axiosInstance";
+
 import { addressSchema } from "@/schemas";
 import { AddAddressSkeleton } from "./ProfileSkeleton";
 
@@ -142,19 +143,15 @@ export const AddAddressModal = ({
           postcode: postcode,
         };
 
-        let response;
-
-        if (editId) {
-          response = await axiosInstanceLaravel.put(
-            `customer/addresses/${editId}`,
-            payload
-          );
-        } else {
-          response = await axiosInstanceLaravel.post(
-            "customer/addresses",
-            payload
-          );
-        }
+        const response = await axiosInstance.patch(
+          "customer/profile/save-address",
+          {
+            address: {
+              id: editId,
+              ...payload,
+            },
+          }
+        );
 
         if (response.data) {
           toast.success(
@@ -212,8 +209,8 @@ export const AddAddressModal = ({
       const fetchAddress = async () => {
         setIsLoadingFetch(true);
         try {
-          const response = await axiosInstanceLaravel.get(
-            `customer/addresses/${editId}`
+          const response = await axiosInstance.get(
+            `customer/profile/addresses/${editId}`
           );
           const data = response.data?.data;
           if (data) {

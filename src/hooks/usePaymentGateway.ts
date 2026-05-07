@@ -54,7 +54,7 @@ export const usePaymentGateway = () => {
         return;
       }
 
-      const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
+      const userInfo = JSON.parse(localStorage.getItem("authinfo") || "{}");
 
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,

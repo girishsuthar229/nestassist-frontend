@@ -8,20 +8,26 @@ import { ChangeEmailModal } from "./ChangeEmailModal";
 
 interface IProps {
   email?: string;
-  mobileNumberWithCode?: string;
+  mobileNumber?: string;
+  countryCode?: string;
   onProfileUpdate?: () => void;
 }
 
 export const ContactInfo = ({
   email,
-  mobileNumberWithCode,
+  mobileNumber,
+  countryCode,
   onProfileUpdate,
 }: IProps) => {
   const [showChangeMobileModal, setShowChangeMobileModal] = useState(false);
   const [showChangeEmailModal, setShowChangeEmailModal] = useState(false);
   const [newEmail, setNewEmail] = useState("");
   const [showVerifyOTPModal, setShowVerifyOTPModal] = useState(false);
-
+  const mobileNumberWithCode: string = mobileNumber
+    ? countryCode
+      ? `+${countryCode} ${mobileNumber}`
+      : mobileNumber
+    : "";
   return (
     <>
       <div className="w-full border border-line rounded-lg p-6 flex flex-col lg:flex-row items-center justify-between gap-6 bg-white shadow-sm">
@@ -67,7 +73,7 @@ export const ContactInfo = ({
       <ChangeMobileModal
         open={showChangeMobileModal}
         onClose={() => setShowChangeMobileModal(false)}
-        currentMobile={mobileNumberWithCode || undefined}
+        currentMobile={mobileNumber || undefined}
         apiEndpoint="customer/profile/change-mobile"
         successMessage="Mobile number changed successfully"
         onSuccess={() => {
@@ -83,7 +89,6 @@ export const ContactInfo = ({
         apiEndpoint="customer/profile/change-email"
         onSuccess={(emailValue) => {
           setNewEmail(emailValue);
-          setShowChangeEmailModal(false);
           setShowVerifyOTPModal(true);
         }}
       />

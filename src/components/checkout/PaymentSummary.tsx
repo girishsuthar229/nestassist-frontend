@@ -148,7 +148,7 @@ const PaymentSummary = ({ liftingSummary, setLiftingSummary }: IProps) => {
 
   const getUserId = () => {
     try {
-      const userInfoString = localStorage.getItem("userInfo");
+      const userInfoString = localStorage.getItem("authinfo");
       if (userInfoString) {
         const userInfo = JSON.parse(userInfoString);
         return userInfo.id || userInfo.user_id || 0;
