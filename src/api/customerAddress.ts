@@ -1,8 +1,8 @@
-import axiosInstanceLaravel from "@/helper/axiosInstanceLaravel";
+import axiosInstance from "@/helper/axiosInstance";
 
 export interface Address {
-  id: number | string;
-  label: "Home" | "Office" | "Other";
+  id: number;
+  label: string;
   custom_label: string | null;
   display_label: string;
   house_flat_number: string;
@@ -34,21 +34,21 @@ export interface AddressResponse {
 }
 
 export const getAddresses = async (): Promise<AddressResponse> => {
-  const response = await axiosInstanceLaravel.get("/customer/addresses");
+  const response = await axiosInstance.get("customer/profile/addresses");
   return response.data;
 };
 
 export const addAddress = async (data: AddressRequest): Promise<{ success: boolean; data: Address }> => {
-  const response = await axiosInstanceLaravel.post("/customer/addresses", data);
+  const response = await axiosInstance.post("customer/profile/addresses", data);
   return response.data;
 };
 
 export const updateAddress = async (id: number | string, data: AddressRequest): Promise<{ success: boolean; data: Address }> => {
-  const response = await axiosInstanceLaravel.put(`/customer/addresses/${id}`, data);
+  const response = await axiosInstance.put(`customer/profile/addresses/${id}`, data);
   return response.data;
 };
 
 export const deleteAddress = async (id: number | string): Promise<{ success: boolean; message: string }> => {
-  const response = await axiosInstanceLaravel.delete(`/customer/addresses/${id}`);
+  const response = await axiosInstance.delete(`customer/profile/addresses/${id}`);
   return response.data;
 };
