@@ -52,7 +52,7 @@ const buildApiParams = (
 const AdminUsersPage = () => {
   const [usersList, setUsersList] = useState<IAdminUser[]>([]);
   const [tableLoading, setTableLoading] = useState(false);
-  const { adminDetail } = useAdminDetail();
+  const { profileDetail } = useAdminDetail();
   const [pagination, setPagination] = useState<IPagination>({
     currentPage: 1,
     limit: 10,
@@ -299,7 +299,7 @@ const AdminUsersPage = () => {
       header: "Action",
       className: "text-center w-[100px]",
       render: (row: IAdminUser) => {
-        const currentAdminId = adminDetail?.id.toString();
+        const currentAdminId = profileDetail?.id.toString();
         const extraActions =
           currentAdminId === row.id
             ? [
