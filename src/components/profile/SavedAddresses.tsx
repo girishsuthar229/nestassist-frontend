@@ -18,7 +18,7 @@ import type { IAddress } from "@/types/masterData.interface";
 import { AddressListSkeleton } from "./ProfileSkeleton";
 import { PROFILE_TEXT } from "@/constants/profile.text";
 
-interface RecentSearch {
+export interface RecentSearch {
   id: number;
   latitude: string;
   longitude: string;

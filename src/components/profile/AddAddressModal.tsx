@@ -20,6 +20,8 @@ import axiosInstance from "@/helper/axiosInstance";
 
 import { addressSchema } from "@/schemas";
 import { AddAddressSkeleton } from "./ProfileSkeleton";
+import { addAddress, updateAddress, type AddressRequest } from "@/api/customerAddress";
+import { ADDRESS_MODAL_TEXT } from "@/constants/checkout.text";
 
 export interface AddressPreFillData {
   houseNumber?: string;
@@ -129,7 +131,7 @@ export const AddAddressModal = ({
     validationSchema: addressSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const payload = {
+        const payload:AddressRequest = {
           label: values.saveAs,
           custom_label: values.saveAs === "Other" ? values.label : "",
           house_flat_number: values.houseNumber,
@@ -142,23 +144,15 @@ export const AddAddressModal = ({
           country: country,
           postcode: postcode,
         };
-
-        const response = await axiosInstance.patch(
-          "customer/profile/save-address",
-          {
-            address: {
-              id: editId,
-              ...payload,
-            },
-          }
-        );
-
-        if (response.data) {
-          toast.success(
-            editId
-              ? "Address updated successfully"
-              : "Address added successfully"
-          );
+        let response;
+        if (editId) {
+          response = await updateAddress(editId, payload);
+          toast.success(ADDRESS_MODAL_TEXT.updateSuccess);
+        } else {
+          response = await addAddress(payload);
+          toast.success(ADDRESS_MODAL_TEXT.addSuccess);
+        }
+        if (response.success) {
           onSave();
           onClose();
           formik.resetForm();

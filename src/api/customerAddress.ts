@@ -14,7 +14,7 @@ export interface Address {
 }
 
 export interface AddressRequest {
-  label: "Home" | "Office" | "Other";
+  label: string;
   custom_label?: string;
   house_flat_number: string;
   landmark: string;
@@ -38,13 +38,19 @@ export const getAddresses = async (): Promise<AddressResponse> => {
   return response.data;
 };
 
+export const getRecentSearches = async () => {
+  const response = await axiosInstance.get("customer/profile/recent-searches");
+  return response;
+};
+
 export const addAddress = async (data: AddressRequest): Promise<{ success: boolean; data: Address }> => {
-  const response = await axiosInstance.post("customer/profile/addresses", data);
+  const response = await axiosInstance.patch("customer/profile/save-address", data);
   return response.data;
 };
 
 export const updateAddress = async (id: number | string, data: AddressRequest): Promise<{ success: boolean; data: Address }> => {
-  const response = await axiosInstance.put(`customer/profile/addresses/${id}`, data);
+  const payload = { id: id, ...data }
+  const response = await axiosInstance.patch(`customer/profile/save-address`, payload);
   return response.data;
 };
 

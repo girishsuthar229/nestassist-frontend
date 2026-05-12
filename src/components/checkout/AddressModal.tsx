@@ -19,6 +19,7 @@ import {
   updateAddress,
   type Address,
   type AddressRequest,
+  getRecentSearches,
 } from "@/api/customerAddress";
 import toast from "react-hot-toast";
 
@@ -51,6 +52,7 @@ import {
   ADDRESS_MODAL_STYLES,
 } from "@/constants/checkout.text";
 import { addressModalSchema } from "@/schemas";
+import type { RecentSearch } from "../profile/SavedAddresses";
 
 const DefaultIcon = L.icon({
   iconUrl: markerIcon,
@@ -108,6 +110,7 @@ const AddressModal = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [mapCoords, setMapCoords] = useState<MapCoords>(DEFAULT_MAP_COORDS);
   const [savedAddresses, setSavedAddresses] = useState<Address[]>([]);
+  const [recentSearches, setRecentSearches] = useState<RecentSearch[]>([]);
   const [searchResults, setSearchResults] = useState<NominatimSearchResult[]>(
     [],
   );
@@ -135,6 +138,7 @@ const AddressModal = ({
       try {
         const payload: AddressRequest = {
           label: values.label,
+          custom_label: values.label === "Other" ? values.extra : "",
           house_flat_number: values.house,
           landmark: values.landmark,
           address: searchQuery || "Manhattan, New York City, New York, USA",
@@ -145,8 +149,6 @@ const AddressModal = ({
           country: country,
           postcode: postcode,
         };
-
-        if (values.label === "Other") payload.custom_label = values.extra;
 
         let response;
         if (editingAddress) {
@@ -181,7 +183,16 @@ const AddressModal = ({
       setIsLoading(false);
     }
   };
-
+  const handleAddClick = async () => {
+    try {
+      const response = await getRecentSearches();
+      if (response.data?.data) {
+        setRecentSearches(response.data.data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch recent searches:", error);
+    }
+  };
   const resetState = () => {
     setView("list");
     setSelectedId("");
@@ -454,7 +465,10 @@ const AddressModal = ({
               <Button
                 variant="link"
                 className={ADDRESS_MODAL_STYLES.primaryLink}
-                onClick={() => setView("search")}
+                onClick={() => {
+                  handleAddClick();
+                  setView("search");
+                }}
               >
                 <img src={Plus} alt="Add" className="w-4 h-4" />
                 {ADDRESS_MODAL_TEXT.addNewAddress}
@@ -617,26 +631,33 @@ const AddressModal = ({
                 </h4>
 
                 <div className="flex flex-col gap-4">
-                  {savedAddresses.map((addr) => (
+                  {recentSearches.map((addr) => (
                     <div
                       key={addr.id}
                       className="flex items-start gap-4 cursor-pointer"
                       onClick={() => {
-                        setSearchQuery(addr.address);
+                        setSearchQuery(addr?.address_line1 + ", " + addr?.address_line2);
+                        setMapCoords({
+                          latitude: parseFloat(addr.latitude),
+                          longitude: parseFloat(addr.longitude),
+                        });
                         setView("map");
                       }}
                     >
-                      <History
-                        className="mt-0.5 text-ink-subtle shrink-0"
-                        size={18}
-                      />
-                      <div className="flex-1">
-                        <div className="text-ink-heading font-medium text-sm leading-5">
-                          {addr.address.split(",")[0]}
-                        </div>
-                        <div className="text-ink-subtle text-[13px] leading-5 line-clamp-1">
-                          {addr.address}
-                        </div>
+                      <div className="mt-1">
+                        <History className="w-5 h-5 text-ink-muted" />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <span className="font-alexandria font-bold text-sm text-ink">
+                          {addr.address_line1}
+                        </span>
+                        <span className="font-alexandria font-medium text-xs text-ink-muted">
+                          {addr.address_line2},{" "}
+                          {addr.postcode ? addr.postcode + "," : ""}{" "}
+                          {addr.city ? addr.city + "," : ""}{" "}
+                          {addr.state ? addr.state + "," : ""}{" "}
+                          {addr.country ? addr.country + "," : ""}
+                        </span>
                       </div>
                     </div>
                   ))}
