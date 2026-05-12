@@ -41,6 +41,10 @@ const footerGroups: FooterGroup[] = [
         label: "Become a Service Partner",
         href: APP_ROUTES.SERVICE_PARTNER_SIGNUP,
       },
+      {
+        label: "Admin / Partner Login",
+        href: APP_ROUTES.AUTH_LOGIN,
+      },
     ],
   },
 ];
