@@ -265,8 +265,8 @@ const Sidebar = ({ isMobileOpen, onClose }: IProps) => {
             <img
               src={images.icLogoSVG}
               alt="NestAssist"
-              width={220}
-              height={36}
+              width={180}
+              height={30}
             />
           </NavLink>
 
